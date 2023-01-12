@@ -11,97 +11,84 @@ class Mankementen extends Controller
         $this->mankementModel = $this->model('Mankement');
     }
 
-    public function index($land = 'Nederland', $age = 67)
+    public function index($AutoId = 2)
     {
-        $records = $this->mankementModel->getMankementen();
-        //var_dump($records);
+        $records = $this->mankementModel->getMankement();
 
         $rows = '';
 
         foreach ($records as $items)
         {
             $rows .= "<tr>
-                        <td>$items->Naam</td>
-                        <td>$items->Email</td>
-                        <td>$items->Kenteken</td>
-                        <td>$items->Datum</td>
-                        <td>$items->Mankement</td>
-                        <td>
-                            <a href='" . URLROOT . "/mankementen/update/$items->Id'>update</a>
-                        </td>
-                        <td>
-                            <a href='" . URLROOT . "/mankementen/delete/$items->Id'>delete</a>
-                        </td>
-                      </tr>";
+            <td>$items->Datum</td>
+            <td>$items->Mankement</td>
+        </tr>";
         }
 
-        $data = [
+        $data = [ 
             'title' => "Overzicht Mankementen",
+            'Naam' => "Manhoi",
+            'Email' => "manhoi@gmail.com",
+            'Kenteken'=> "TH-78-KL - Ferrari",
+            'AutoId' => $AutoId,
             'rows' => $rows
         ];
         $this->view('mankementen/index', $data);
     }
 
-    public function update($id = null) 
+    public function create($AutoId = NULL)
     {
-        /**
-         * Controleer of er gepost wordt vanuit de view update.php
-         */
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            /**
-             * Maak het $_POST array schoon
-             */
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-            $this->mankementModel->updateMankement($_POST);
-
-            header("Location: " . URLROOT . "/mankementen/index");
-        }
-
-        $record = $this->mankementModel->getMankement($id);
-
         $data = [
-            'title' => 'Update Mankementen',
-            'Id' => $record->Id,
-            'AutoId' => $record->AutoId,
-            'Datum' => $record->Datum,
-            'Mankement' => $record->Mankement
-        ]; 
-        $this->view('mankementen/update', $data);
-    }
-
-    public function delete($id)
-    {
-        $result = $this->mankementModel->deleteMankement($id);
-        if ($result) {
-            echo "Het record is verwijderd uit de database";
-            header("Refresh: 3; URL=" . URLROOT . "/mankementen/index");
-        } else {
-            echo "Internal servererror, het record is niet verwijderd";
-            header("Refresh: 3; URL=" . URLROOT . "/mankementen/index");
-        }
-    }
-
-    public function create()
-    {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            'title' => 'Invoeren mankement',
+            'Kenteken' => "TH-78-KL - Ferari",
+            'AutoId' => $AutoId,
+            'MankementError' => ''
+        ];
+        
+        if ($_SERVER["REQUEST_METHOD"] == "POST") 
+        {
             // $_POST array schoonmaken
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            $result = $this->mankementModel->createMankement($_POST);
+            $data = [ 
+                'title' => 'Invoeren mankement',
+                'Kenteken' => "TH-78-KL - Ferari" ,
+                'AutoId' => $_POST['AutoId'],
+                'Mankement' => $_POST['Mankement'],
+                'MankementError' => ''
+            ];
+            
+            $data = $this->validateAddMankementForm($data);
 
-            if ($result) {
-                echo "Het invoeren is gelukt";
-                header("Refresh:3; URL=" . URLROOT . "/mankementen/index");
+            if (empty($data['MankementError'])) {
+                $result = $this->mankementModel->createMankement($_POST);
+
+                if ($result) {
+                    $data['title'] = "<p>Het nieuwe mankement is toegevoegd!</p>";
+                } else {
+                    echo "<p>Het nieuwe mankement is niet toegevoegd :</p>";
+                }
+                header('Refresh:2 url=' . URLROOT . '/mankement/index');
             } else {
-                echo "Het invoeren is NIET gelukt";
-                header("Refresh:3; URL=" . URLROOT . "/mankementen/index");
+                header('Refresh:2 url=' . URLROOT . '/mankement/addmankement/' . $data['AutoId']);
             }
+
         }
 
-        $data = [
-            'title' => 'Invoeren Mankement'
-        ];
         $this->view('mankementen/create', $data);
+
     }
+
+    private function validateAddMankementForm($data)
+    {
+        if (strlen($data['Mankement']) > 50) {
+            $data['MankementError'] = "Het nieuwe mankement is meer dan 50 karakters lang en is niet toegevoegd, probeer het opnieuw ";
+        } elseif (empty($data['Mankement']))
+        {
+            $data['MankementError'] = "U bent verplicht om de mankement invullen";
+        }
+
+        return $data;
+    }
+
 }

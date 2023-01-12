@@ -1,17 +1,26 @@
-<h3><?= $data['title'] ?></h3>
-<p><a href="<?= URLROOT ?>/mankementen/create">Mankement Toevoegen</a></p>
-<table>
+<?php require(APPROOT . '/views/includes/header.php'); ?>
+<h2><?= $data['title']; ?></h2>
+
+<h4><?= 'Instructeur naam: ' .  $data['Naam'] ?></h4>
+<h4><?= 'E-mailadres: ' .  $data['Email'] ?></h4>
+<h4><?= 'Kenteken Auto: ' .  $data['Kenteken'] ?></h4>
+
+
+<table border='1'>
     <thead>
-        <th>Naam Instructeur</th>
-        <th>E-mailadres</th>
-        <th>Kenteken auto</th>
         <th>Datum</th>
         <th>Mankement</th>
-        <th></th>
-        <th></th>
     </thead>
     <tbody>
         <?= $data['rows']; ?>
     </tbody>
 </table>
-<p><a href="<?= URLROOT; ?>/landingpages/index">Terug naar Overzicht Mankementen</a></p>
+
+<br>
+<a href="<?= URLROOT; ?>/mankement/addMankement/<?= $data['AutoId']; ?>">
+<div class="button">
+    <input type="button" value="Mankement Toevoegen">
+</a>
+</div>
+
+<?php require(APPROOT . '/views/includes/footer.php'); ?>
