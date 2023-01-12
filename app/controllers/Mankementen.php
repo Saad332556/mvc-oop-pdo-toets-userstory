@@ -21,15 +21,16 @@ class Mankementen extends Controller
         foreach ($records as $items)
         {
             $rows .= "<tr>
-                        <td>$items->id</td>
-                        <td>$items->autoid</td>
-                        <td>$items->datum</td>
-                        <td>$items->mankement</td>
+                        <td>$items->Naam</td>
+                        <td>$items->Email</td>
+                        <td>$items->Kenteken</td>
+                        <td>$items->Datum</td>
+                        <td>$items->Mankement</td>
                         <td>
-                            <a href='" . URLROOT . "/mankementen/update/$items->id'>update</a>
+                            <a href='" . URLROOT . "/mankementen/update/$items->Id'>update</a>
                         </td>
                         <td>
-                            <a href='" . URLROOT . "/mankementen/delete/$items->id'>delete</a>
+                            <a href='" . URLROOT . "/mankementen/delete/$items->Id'>delete</a>
                         </td>
                       </tr>";
         }

@@ -23,7 +23,7 @@ class Mankement
 
     public function getMankement($id)
     {
-        $this->db->query("SELECT * FROM Mankement WHERE id = :id");
+        $this->db->query("SELECT * FROM Mankement WHERE Id = :id");
         $this->db->bind(':id', $id, PDO::PARAM_INT);
         return $this->db->single();
     }
