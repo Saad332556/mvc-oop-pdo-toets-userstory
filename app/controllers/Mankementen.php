@@ -1,19 +1,19 @@
 <?php
 
-class Countries extends Controller
+class Mankementen extends Controller
 {
     //properties
-    private $countryModel;
+    private $mankementModel;
 
     // Dit is de constructor van de controller
     public function __construct() 
     {
-        $this->countryModel = $this->model('Country');
+        $this->mankementModel = $this->model('Country');
     }
 
     public function index($land = 'Nederland', $age = 67)
     {
-        $records = $this->countryModel->getCountries();
+        $records = $this->mankementModel->getCountries();
         //var_dump($records);
 
         $rows = '';
@@ -53,12 +53,12 @@ class Countries extends Controller
              */
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            $this->countryModel->updateCountry($_POST);
+            $this->mankementModel->updateCountry($_POST);
 
             header("Location: " . URLROOT . "/country/index");
         }
 
-        $record = $this->countryModel->getCountry($id);
+        $record = $this->mankementModel->getCountry($id);
 
         $data = [
             'title' => 'Update Landen',
@@ -73,7 +73,7 @@ class Countries extends Controller
 
     public function delete($id)
     {
-        $result = $this->countryModel->deleteCountry($id);
+        $result = $this->mankementModel->deleteCountry($id);
         if ($result) {
             echo "Het record is verwijderd uit de database";
             header("Refresh: 3; URL=" . URLROOT . "/countries/index");
@@ -89,7 +89,7 @@ class Countries extends Controller
             // $_POST array schoonmaken
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            $result = $this->countryModel->createCountry($_POST);
+            $result = $this->mankementModel->createCountry($_POST);
 
             if ($result) {
                 echo "Het invoeren is gelukt";
