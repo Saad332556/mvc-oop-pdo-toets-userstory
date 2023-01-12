@@ -8,12 +8,12 @@ class Mankementen extends Controller
     // Dit is de constructor van de controller
     public function __construct() 
     {
-        $this->mankementModel = $this->model('Country');
+        $this->mankementModel = $this->model('Mankement');
     }
 
     public function index($land = 'Nederland', $age = 67)
     {
-        $records = $this->mankementModel->getCountries();
+        $records = $this->mankementModel->getMankementen();
         //var_dump($records);
 
         $rows = '';
@@ -22,24 +22,23 @@ class Mankementen extends Controller
         {
             $rows .= "<tr>
                         <td>$items->id</td>
-                        <td>$items->name</td>
-                        <td>$items->capitalCity</td>
-                        <td>$items->continent</td>
-                        <td>$items->population</td>
+                        <td>$items->autoid</td>
+                        <td>$items->datum</td>
+                        <td>$items->mankement</td>
                         <td>
-                            <a href='" . URLROOT . "/countries/update/$items->id'>update</a>
+                            <a href='" . URLROOT . "/mankementen/update/$items->id'>update</a>
                         </td>
                         <td>
-                            <a href='" . URLROOT . "/countries/delete/$items->id'>delete</a>
+                            <a href='" . URLROOT . "/mankementen/delete/$items->id'>delete</a>
                         </td>
                       </tr>";
         }
 
         $data = [
-            'title' => "Overzicht landen",
+            'title' => "Overzicht Mankementen",
             'rows' => $rows
         ];
-        $this->view('countries/index', $data);
+        $this->view('mankementen/index', $data);
     }
 
     public function update($id = null) 
@@ -53,33 +52,32 @@ class Mankementen extends Controller
              */
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            $this->mankementModel->updateCountry($_POST);
+            $this->mankementModel->updateMankement($_POST);
 
-            header("Location: " . URLROOT . "/country/index");
+            header("Location: " . URLROOT . "/mankementen/index");
         }
 
-        $record = $this->mankementModel->getCountry($id);
+        $record = $this->mankementModel->getMankement($id);
 
         $data = [
-            'title' => 'Update Landen',
+            'title' => 'Update Mankementen',
             'Id' => $record->Id,
-            'Name' => $record->Name,
-            'CapitalCity' => $record->CapitalCity,
-            'Continent' => $record->Continent,
-            'Population' => $record->Population
+            'AutoId' => $record->AutoId,
+            'Datum' => $record->Datum,
+            'Mankement' => $record->Mankement
         ]; 
-        $this->view('countries/update', $data);
+        $this->view('mankementen/update', $data);
     }
 
     public function delete($id)
     {
-        $result = $this->mankementModel->deleteCountry($id);
+        $result = $this->mankementModel->deleteMankement($id);
         if ($result) {
             echo "Het record is verwijderd uit de database";
-            header("Refresh: 3; URL=" . URLROOT . "/countries/index");
+            header("Refresh: 3; URL=" . URLROOT . "/mankementen/index");
         } else {
             echo "Internal servererror, het record is niet verwijderd";
-            header("Refresh: 3; URL=" . URLROOT . "/countries/index");
+            header("Refresh: 3; URL=" . URLROOT . "/mankementen/index");
         }
     }
 
@@ -89,20 +87,20 @@ class Mankementen extends Controller
             // $_POST array schoonmaken
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            $result = $this->mankementModel->createCountry($_POST);
+            $result = $this->mankementModel->createMankement($_POST);
 
             if ($result) {
                 echo "Het invoeren is gelukt";
-                header("Refresh:3; URL=" . URLROOT . "/countries/index");
+                header("Refresh:3; URL=" . URLROOT . "/mankementen/index");
             } else {
                 echo "Het invoeren is NIET gelukt";
-                header("Refresh:3; URL=" . URLROOT . "/countries/index");
+                header("Refresh:3; URL=" . URLROOT . "/mankementen/index");
             }
         }
 
         $data = [
-            'title' => 'Voeg een nieuw land toe'
+            'title' => 'Invoeren Mankement'
         ];
-        $this->view('countries/create', $data);
+        $this->view('mankementen/create', $data);
     }
 }

@@ -1,6 +1,6 @@
 <h3><?= $data['title']; ?></h3>
 
-<form action="<?= URLROOT; ?>/countries/create" method="post">
+<form action="<?= URLROOT; ?>/mankementen/create" method="post">
     <table>
         <tbody>
             <tr>
