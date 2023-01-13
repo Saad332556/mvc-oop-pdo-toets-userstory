@@ -1,28 +1,24 @@
-<h3><?= $data['title']; ?></h3>
+<?php require(APPROOT . '/views/includes/header.php');?>
+<h2><?= $data['title']; ?></h2>
+
+<h4><?=  $data['kenteken']; ?></h4>
 
 <form action="<?= URLROOT; ?>/mankementen/create" method="post">
     <table>
         <tbody>
             <tr>
-                <td>Land:</td>
-                <td><input type="text" name="name" id="name"></td>
+                <td for="Mankement" style="padding-bottom: 4.5rem">Mankement:</td>
+                <td><input type="text" name="mankement" id="mankement" style="height: 5rem; width: 15rem"></td>
             </tr>
+
+            <div class="MankementError"><?= $data['MankementError'];?></div>
+            <input type="hidden" name="autoid" value="<?= $data['autoid'];?>">
+
             <tr>
-                <td>Hoofstad:</td>
-                <td><input type="text" name="capitalCity" id="capitalCity"></td>
-            </tr>
-            <tr>
-                <td>Continent:</td>
-                <td><input type="text" name="continent" id="continent"></td>
-            </tr>
-            <tr>
-                <td>Aantal inwoners:</td>
-                <td><input type="text" name="population" id="population"></td>
-            </tr>
-            <tr>
-                <td><input type="submit" name="submit" id="submit" value="Verstuur"></td>
+                <td><input type="submit" value="Voer In"></td>
             </tr>
         </tbody>
     </table>
-
 </form>
+
+<?php require(APPROOT . '/views/includes/footer.php');?>

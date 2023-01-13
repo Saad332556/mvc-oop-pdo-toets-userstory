@@ -13,11 +13,11 @@ class Mankementen extends Controller
 
     public function index($AutoId = 2)
     {
-        $records = $this->mankementModel->getMankement();
+        $result = $this->mankementModel->getMankementen();
 
         $rows = '';
 
-        foreach ($records as $items)
+        foreach ($result as $items)
         {
             $rows .= "<tr>
             <td>$items->Datum</td>
@@ -27,10 +27,10 @@ class Mankementen extends Controller
 
         $data = [ 
             'title' => "Overzicht Mankementen",
-            'Naam' => "Manhoi",
-            'Email' => "manhoi@gmail.com",
-            'Kenteken'=> "TH-78-KL - Ferrari",
-            'AutoId' => $AutoId,
+            'naam' => "Manhoi",
+            'email' => "manhoi@gmail.com",
+            'kenteken'=> "TH-78-KL - Ferrari",
+            'autoid' => $AutoId,
             'rows' => $rows
         ];
         $this->view('mankementen/index', $data);
@@ -40,8 +40,8 @@ class Mankementen extends Controller
     {
         $data = [
             'title' => 'Invoeren mankement',
-            'Kenteken' => "TH-78-KL - Ferari",
-            'AutoId' => $AutoId,
+            'kenteken' => "TH-78-KL - Ferari",
+            'autoid' => $AutoId,
             'MankementError' => ''
         ];
         
@@ -52,25 +52,25 @@ class Mankementen extends Controller
 
             $data = [ 
                 'title' => 'Invoeren mankement',
-                'Kenteken' => "TH-78-KL - Ferari" ,
-                'AutoId' => $_POST['AutoId'],
-                'Mankement' => $_POST['Mankement'],
+                'kenteken' => "TH-78-KL - Ferari" ,
+                'autoid' => $_POST['autoid'],
+                'mankement' => $_POST['mankement'],
                 'MankementError' => ''
             ];
             
-            $data = $this->validateAddMankementForm($data);
+            $data = $this->validateCreateForm($data);
 
             if (empty($data['MankementError'])) {
-                $result = $this->mankementModel->createMankement($_POST);
+                $result = $this->mankementModel->create($_POST);
 
                 if ($result) {
                     $data['title'] = "<p>Het nieuwe mankement is toegevoegd!</p>";
                 } else {
                     echo "<p>Het nieuwe mankement is niet toegevoegd :</p>";
                 }
-                header('Refresh:2 url=' . URLROOT . '/mankement/index');
+                header('Refresh:2 url=' . URLROOT . '/mankementen/index');
             } else {
-                header('Refresh:2 url=' . URLROOT . '/mankement/addmankement/' . $data['AutoId']);
+                header('Refresh:2 url=' . URLROOT . '/mankementen/create/' . $data['autoid']);
             }
 
         }
@@ -79,11 +79,11 @@ class Mankementen extends Controller
 
     }
 
-    private function validateAddMankementForm($data)
+    private function validateCreateForm($data)
     {
-        if (strlen($data['Mankement']) > 50) {
+        if (strlen($data['mankement']) > 50) {
             $data['MankementError'] = "Het nieuwe mankement is meer dan 50 karakters lang en is niet toegevoegd, probeer het opnieuw ";
-        } elseif (empty($data['Mankement']))
+        } elseif (empty($data['mankement']))
         {
             $data['MankementError'] = "U bent verplicht om de mankement invullen";
         }

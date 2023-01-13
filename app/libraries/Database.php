@@ -17,12 +17,11 @@ class Database
     // Dit is de constructor van de Database class. We maken verbinding met de MySQL server
     public function __construct()
     {
-        $conn = 'mysql:host=' . $this->dbHost . ';dbname=' . $this->dbName;
+        $conn = "mysql:host=$this->dbHost;dbname=$this->dbName";
         // echo $conn;exit();
         $options = array(
             PDO::ATTR_PERSISTENT => true,
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_EMULATE_PREPARES => false
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         );
 
 
@@ -52,10 +51,7 @@ class Database
                 case is_bool($value):
                     $type = PDO::PARAM_BOOL;
                     break;
-                case is_string($value):
-                    $type = PDO::PARAM_STR;
-                    break;
-                case is_null($value):
+                case is_null($type):
                     $type = PDO::PARAM_NULL;
                     break;
                 default:
@@ -77,10 +73,14 @@ class Database
         return $this->statement->fetchAll(PDO::FETCH_OBJ);
     }
 
-    
     public function single() 
     {
         $this->execute();
         return $this->statement->fetch(PDO::FETCH_OBJ);
+    }
+
+    public function rowCount()
+    {
+        $this->statement->rowCount();
     }
 }

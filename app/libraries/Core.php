@@ -23,8 +23,10 @@ class Core
         // Maak een nieuw object van de controllerclass
         $this->currentController = new $this->currentController();
      
-        if (isset($url[1])) {
-            if (method_exists($this->currentController, $url[1])) {
+        if (isset($url[1])) 
+        {
+            if (method_exists($this->currentController, $url[1])) 
+            {
                 $this->currentMethod = $url[1];
                 unset($url[1]);
             }
@@ -39,7 +41,8 @@ class Core
     
     public function getURL()
     {
-        if (isset($_GET['url'])) {
+        if (isset($_GET['url'])) 
+        {
             $url = rtrim($_GET['url'], '/');
 
             $url = filter_var($url, FILTER_SANITIZE_URL);

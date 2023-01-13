@@ -1,9 +1,9 @@
 <?php require(APPROOT . '/views/includes/header.php'); ?>
 <h2><?= $data['title']; ?></h2>
 
-<h4><?= 'Instructeur naam: ' .  $data['Naam'] ?></h4>
-<h4><?= 'E-mailadres: ' .  $data['Email'] ?></h4>
-<h4><?= 'Kenteken Auto: ' .  $data['Kenteken'] ?></h4>
+<h4><?= 'Instructeur naam: ' .  $data['naam'] ?></h4>
+<h4><?= 'Email: ' .  $data['email'] ?></h4>
+<h4><?= 'Kenteken auto: ' .  $data['kenteken'] ?></h4>
 
 
 <table border='1'>
@@ -17,9 +17,9 @@
 </table>
 
 <br>
-<a href="<?= URLROOT; ?>/mankement/addMankement/<?= $data['AutoId']; ?>">
+<a href="<?= URLROOT; ?>/mankementen/create/<?= $data['autoid']; ?>">
 <div class="button">
-    <input type="button" value="Mankement Toevoegen">
+    <input type="button" value="Mankement toevoegen">
 </a>
 </div>
 
